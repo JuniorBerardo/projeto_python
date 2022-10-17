@@ -1,5 +1,15 @@
 import tkinter as tk
+import mysql.connector
+#pip install mysql-connector
 
+def conexao():
+    print('test')
+    try:
+            conexao = mysql.connector.connect( host = "localhost", user = "root", passwd = "", db = "usuarios" )
+            print("conectado")
+            return conexao
+    except mysql.connector.Error as e:
+            print(f'Erro ao conectar no Servidor MySql: {e}')
 
 def cadastrarUsuarios():
     janelaUsuarios = tk.Toplevel(app)
@@ -31,6 +41,7 @@ def cadastrarUsuarios():
     entryEstado.place(x=230, y=150)
     
     def salvarUsuario():
+        conn = conexao()
         print("O nome informado foi: ",entryNome.get())
         print("O sobrenome informado foi: ", entrySobrenome.get())
         print("A data de nascimento informada foi: ", entryDataNascimento.get())
@@ -58,11 +69,7 @@ fileMenu.add_command(label="Cadastrar Usuários",command=cadastrarUsuarios)
 fileMenu.add_command(label="Cadastrar Produtos",command=cadastrarProdutos)
 menuPrincipal.add_cascade(label="Funcao",menu=fileMenu)
 
-#buttonExample = tk.Button(app, 
-#             text="Create new window",
-#             command=createNewWindow)
-#buttonExample.place(x=100,y=50)
+
 app.title("Sistema Tarumã")
 app.geometry("800x600")
 app.mainloop()
-app.destroy()
