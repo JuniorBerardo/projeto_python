@@ -2,18 +2,48 @@ import tkinter as tk
 import mysql.connector
 #pip install mysql-connector
 
+class Usuarios():
+    def __init__(self, id, nome, sobrenome, cidade, estado, data_nascimento):
+            self.id = id
+            self.nome = nome
+            self.sobrenome = sobrenome
+            self.cidade = cidade
+            self.estado = estado
+            self.data_nascimento = data_nascimento
+    
+    
 def conexao():
-    print('test')
+    
     try:
-            conexao = mysql.connector.connect( host = "localhost", user = "root", passwd = "", db = "usuarios" )
+            conexao = mysql.connector.connect(host= "localhost", user= "root", passwd= "", db= "banco_python" )
             print("conectado")
             return conexao
     except mysql.connector.Error as e:
             print(f'Erro ao conectar no Servidor MySql: {e}')
 
+        
+def desconectar():
+    if conexao:
+            conexao.close()
+    
+
+def selecionarUsuarios():
+        conn = conexao()
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM usuarios")
+        table =cursor.fetchall()
+        print('\n Usuarios')
+        for row in table:
+                print(row[0], end="")
+                print(row[1], end="")
+                print(row[2], end="")
+                print(row[3], end="")
+
+
+
 def cadastrarUsuarios():
     janelaUsuarios = tk.Toplevel(app)
-
+    selecionarUsuarios()
     lblNome = tk.Label(janelaUsuarios,text="Informe o seu nome: ",font="Times",bg="white",foreground="black")
     lblNome.place(x=100,y=50)
 
@@ -73,3 +103,4 @@ menuPrincipal.add_cascade(label="Funcao",menu=fileMenu)
 app.title("Sistema Tarumã")
 app.geometry("800x600")
 app.mainloop()
+#app.destroy
